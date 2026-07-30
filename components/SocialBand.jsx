@@ -20,8 +20,8 @@ export default function SocialBand() {
         </RevealItem>
 
         <RevealItem as="p" className="band-sub">
-          <b>5,555 penguins</b> on Arc. Chunky, hand-drawn, and permanently
-          cold-blooded about brown.
+          <b>5,555 penguins</b> on Arc. Cold by nature. Chosen by few. Soon on
+          Arc
         </RevealItem>
 
         <RevealItem className="band-actions">
