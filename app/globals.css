@@ -1,0 +1,828 @@
+/* ==========================================================================
+   ARC PENGUINS — design system
+   Brown / dark-brown only. Rounded, chunky, premium.
+   ========================================================================== */
+
+:root {
+  /* Palette */
+  --bg: #1e140e; /* page background, dark brown */
+  --surface: #2e1f14; /* section / surface brown */
+  --card: #4a2f1b; /* card / raised brown */
+  --accent: #c8894b; /* caramel / tan */
+  --highlight: #e0a96d; /* light tan */
+  --text: #f3e4d0; /* cream */
+
+  --text-dim: rgba(243, 228, 208, 0.66);
+  --hairline: rgba(224, 169, 109, 0.18);
+
+  /* Radii */
+  --r-sm: 10px;
+  --r-md: 18px;
+  --r-lg: 28px;
+  --r-pill: 999px;
+
+  /* Shadows — soft, warm, never black */
+  --shadow-sm: 0 4px 14px rgba(12, 7, 4, 0.35);
+  --shadow-md: 0 14px 40px rgba(12, 7, 4, 0.45);
+  --shadow-lg: 0 30px 80px rgba(12, 7, 4, 0.55);
+  --glow: 0 10px 30px rgba(200, 137, 75, 0.35);
+
+  /* Motion — restrained, consistent, ease-out */
+  --dur-fast: 0.22s;
+  --dur: 0.36s;
+  --dur-slow: 0.6s;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --gutter: clamp(20px, 5vw, 72px);
+  --maxw: 1400px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Lenis drives the scroll; never let the browser fight it. */
+  scroll-behavior: auto;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  min-height: 100dvh;
+  /* Warm vignette so the flat brown reads as depth, not as a void. */
+  background-image:
+    radial-gradient(120% 80% at 50% -10%, rgba(200, 137, 75, 0.12), transparent 60%),
+    radial-gradient(80% 60% at 100% 100%, rgba(74, 47, 27, 0.5), transparent 70%);
+  background-attachment: fixed;
+}
+
+.display {
+  font-family: var(--font-display), ui-rounded, system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 3px solid var(--highlight);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* Lenis ------------------------------------------------------------------ */
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Shared layout ---------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Header ----------------------------------------------------------------- */
+
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  padding: clamp(16px, 2.4vw, 28px) var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  pointer-events: none;
+  /* Keeps the wordmark legible over bright artwork. */
+  background: linear-gradient(to bottom, rgba(30, 20, 14, 0.92), rgba(30, 20, 14, 0));
+}
+
+.header > * {
+  pointer-events: auto;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  transform: rotate(-3deg) translate3d(0, 0, 0);
+  transform-origin: left center;
+  transition: transform var(--dur) var(--ease-out);
+  will-change: transform;
+}
+
+.wordmark:hover {
+  transform: rotate(-3deg) translate3d(0, -2px, 0) scale(1.03);
+}
+
+/* Logo mark --------------------------------------------------------------
+   A circular crop of the hooded-penguin artwork. `.mark-zoom` scales the
+   picture up and offsets it so the face lands dead centre in the circle; the
+   eyelids sit inside that same box, so they track the face at any size. */
+
+.mark {
+  position: relative;
+  flex: none;
+  width: clamp(48px, 5.4vw, 66px);
+  aspect-ratio: 1 / 1;
+}
+
+.mark-bob {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.mark-avatar {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow-sm);
+}
+
+.mark-zoom {
+  position: absolute;
+  width: 170%;
+  left: -50%;
+  top: -27.3%;
+  aspect-ratio: 2252 / 2560; /* the source artwork's ratio */
+}
+
+/* Eyelids, in percentages of the artwork. Deliberately a touch larger than
+   the eyes — they're near-black on a near-black head, so over-coverage is
+   invisible while under-coverage would leave a sliver of white showing. */
+.mark-lid {
+  position: absolute;
+  background: #232323;
+  border-radius: 15%;
+  transform-origin: top center;
+  transform: scaleY(0);
+}
+
+/* Measured against the artwork: each box is the eye's bounding box plus a
+   hair of margin. Keep the radius low — at 40% the corners eat enough of the
+   box to leave slivers of white showing mid-blink. */
+/* Eye bounds measured off the artwork by scanning for bright pixels:
+   left  eye x 0.4423-0.6004, y 0.3352-0.3840
+   right eye x 0.7029-0.7833, y 0.3563-0.4023
+   Each box clears those by a few tenths of a percent on every edge. */
+.mark-lid-left {
+  left: 43.8%;
+  top: 32.8%;
+  width: 17.2%;
+  height: 6%;
+}
+
+.mark-lid-right {
+  left: 69.8%;
+  top: 35%;
+  width: 8.9%;
+  height: 5.6%;
+}
+
+.mark-ring {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  pointer-events: none;
+  transform: rotate(-90deg); /* draw from 12 o'clock */
+  opacity: 0.85;
+}
+
+.wordmark-text {
+  font-size: clamp(26px, 4.2vw, 46px);
+  color: var(--text);
+  text-shadow:
+    0 3px 0 var(--card),
+    0 6px 0 rgba(46, 31, 20, 0.9),
+    0 12px 24px rgba(12, 7, 4, 0.55);
+}
+
+.wordmark-text .accent {
+  color: var(--highlight);
+}
+
+.header-link {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 10px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hairline);
+  transition:
+    color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out);
+}
+
+.header-link:hover {
+  color: var(--bg);
+  background: var(--highlight);
+  border-color: var(--highlight);
+  transform: translate3d(0, -2px, 0);
+}
+
+/* Hero / slideshow ------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(88px, 11vh, 132px) 0 clamp(32px, 6vh, 72px);
+  overflow: clip;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: center;
+  margin-bottom: clamp(14px, 2vh, 22px);
+  padding: 8px 18px;
+  border-radius: var(--r-pill);
+  background: rgba(74, 47, 27, 0.55);
+  border: 1px solid var(--hairline);
+  color: var(--highlight);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+}
+
+/* Kept compact: the artwork is the hero, and the wordmark already sits
+   top-left, so the title is a caption to the art rather than a billboard. */
+.hero-title {
+  text-align: center;
+  font-size: clamp(32px, 5.4vw, 68px);
+  margin: 0 0 clamp(16px, 2.6vh, 30px);
+  color: var(--text);
+  text-shadow:
+    0 3px 0 var(--card),
+    0 7px 0 rgba(46, 31, 20, 0.85),
+    0 18px 38px rgba(12, 7, 4, 0.6);
+}
+
+.hero-title .accent {
+  color: var(--highlight);
+}
+
+/* Slideshow -------------------------------------------------------------- */
+
+.slideshow {
+  /* The artwork is square, so the stage is too — nothing gets cropped.
+     Sized by whichever runs out first: width, viewport height, or the cap. */
+  position: relative;
+  width: min(calc(100% - (var(--gutter) * 2)), 54svh, 580px);
+  aspect-ratio: 1 / 1;
+  margin-inline: auto;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 1px var(--hairline),
+    inset 0 0 0 1px rgba(243, 228, 208, 0.06);
+  isolation: isolate;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Ken Burns — only the active slide drifts. */
+.slide.is-active .slide-img {
+  animation: kenburns 9s var(--ease-soft) forwards;
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale3d(1.02, 1.02, 1) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale3d(1.12, 1.12, 1) translate3d(-1.2%, -1.4%, 0);
+  }
+}
+
+/* Off-screen warmer for the upcoming slide — never painted. */
+.slide-preload {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Warm scrim keeps the dots and arrows readable on any artwork. */
+.slide-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(30, 20, 14, 0.5) 0%, rgba(30, 20, 14, 0) 26%),
+    linear-gradient(to bottom, rgba(30, 20, 14, 0.28) 0%, rgba(30, 20, 14, 0) 22%);
+}
+
+/* Arrows */
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 4;
+  width: clamp(40px, 5vw, 54px);
+  height: clamp(40px, 5vw, 54px);
+  border-radius: var(--r-pill);
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  background: rgba(46, 31, 20, 0.62);
+  border: 1px solid var(--hairline);
+  backdrop-filter: blur(8px);
+  transform: translate3d(0, -50%, 0);
+  opacity: 0;
+  transition:
+    opacity var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out);
+}
+
+.slideshow:hover .slide-arrow,
+.slide-arrow:focus-visible {
+  opacity: 1;
+}
+
+.slide-arrow.prev {
+  left: clamp(10px, 1.6vw, 20px);
+}
+.slide-arrow.next {
+  right: clamp(10px, 1.6vw, 20px);
+}
+
+.slide-arrow:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.slide-arrow.prev:hover {
+  transform: translate3d(-3px, -50%, 0) scale(1.06);
+}
+.slide-arrow.next:hover {
+  transform: translate3d(3px, -50%, 0) scale(1.06);
+}
+
+/* Touch devices have no hover — keep the arrows visible. */
+@media (hover: none) {
+  .slide-arrow {
+    opacity: 1;
+  }
+}
+
+/* Dots */
+.slide-dots {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(12px, 2vw, 20px);
+  z-index: 4;
+  transform: translate3d(-50%, 0, 0);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-radius: var(--r-pill);
+  background: rgba(30, 20, 14, 0.55);
+  border: 1px solid var(--hairline);
+  backdrop-filter: blur(8px);
+}
+
+.slide-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--r-pill);
+  background: rgba(243, 228, 208, 0.35);
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    width var(--dur) var(--ease-out);
+}
+
+.slide-dot:hover {
+  background: var(--highlight);
+  transform: translate3d(0, 0, 0) scale(1.45);
+}
+
+.slide-dot.is-active {
+  width: 26px;
+  background: var(--accent);
+}
+
+.slide-dot.is-active:hover {
+  transform: translate3d(0, 0, 0) scale(1.08);
+}
+
+/* Scroll cue */
+.scroll-cue {
+  margin: clamp(22px, 4vh, 40px) auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.scroll-cue-line {
+  width: 1px;
+  height: 34px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation: cue-drop 2.4s var(--ease-soft) infinite;
+  transform-origin: top center;
+}
+
+@keyframes cue-drop {
+  0%,
+  100% {
+    transform: scaleY(0.4);
+    opacity: 0.3;
+  }
+  45% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+/* Bottom band ------------------------------------------------------------ */
+
+.band {
+  position: relative;
+  margin-top: clamp(40px, 8vh, 90px);
+  padding: clamp(56px, 9vh, 110px) 0 clamp(36px, 6vh, 64px);
+  background: var(--surface);
+  border-top: 1px solid var(--hairline);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  text-align: center;
+  overflow: clip;
+}
+
+.band-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(14px, 2.2vh, 22px);
+}
+
+.band-mark {
+  font-size: clamp(38px, 7vw, 78px);
+  color: var(--text);
+  text-shadow:
+    0 4px 0 var(--card),
+    0 9px 0 rgba(30, 20, 14, 0.9),
+    0 20px 44px rgba(12, 7, 4, 0.5);
+}
+
+.band-mark .accent {
+  color: var(--highlight);
+}
+
+.band-sub {
+  max-width: 52ch;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: clamp(15px, 1.6vw, 19px);
+}
+
+.band-sub b {
+  color: var(--highlight);
+  font-weight: 600;
+}
+
+.band-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+/* Buttons ---------------------------------------------------------------- */
+
+.btn {
+  --btn-bg: var(--accent);
+  --btn-fg: #23160d;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 30px;
+  border-radius: var(--r-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 600;
+  font-size: clamp(15px, 1.5vw, 17px);
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 5px 0 rgba(0, 0, 0, 0.22),
+    var(--shadow-md);
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out);
+  will-change: transform;
+}
+
+.btn:hover {
+  background: var(--highlight);
+  transform: translate3d(0, -4px, 0);
+  box-shadow:
+    0 9px 0 rgba(0, 0, 0, 0.22),
+    var(--glow);
+}
+
+.btn:active {
+  transform: translate3d(0, -1px, 0);
+  box-shadow:
+    0 3px 0 rgba(0, 0, 0, 0.25),
+    var(--shadow-sm);
+}
+
+.btn .btn-arrow {
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn:hover .btn-arrow {
+  transform: translate3d(4px, 0, 0);
+}
+
+.btn.ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  border: 1px solid var(--hairline);
+  box-shadow: none;
+}
+
+.btn.ghost:hover {
+  --btn-fg: var(--bg);
+  background: var(--text);
+  box-shadow: var(--shadow-md);
+}
+
+/* X link — icon wiggles on hover */
+.x-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 26px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--hairline);
+  background: rgba(74, 47, 27, 0.4);
+  color: var(--text);
+  font-weight: 600;
+  transform: translate3d(0, 0, 0);
+  transition:
+    transform var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    border-color var(--dur) var(--ease-out);
+}
+
+/* The icon used to carry the wiggle; with it gone the whole pill does it.
+   Each keyframe holds the -4px lift so it still rises like the button beside
+   it, and `forwards` keeps it raised for as long as the pointer stays. */
+.x-link:hover {
+  background: var(--card);
+  border-color: var(--highlight);
+  animation: x-wiggle 0.6s var(--ease-soft) forwards;
+}
+
+@keyframes x-wiggle {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  30% {
+    transform: translate3d(0, -4px, 0) rotate(-3.5deg);
+  }
+  55% {
+    transform: translate3d(0, -4px, 0) rotate(2.5deg);
+  }
+  80% {
+    transform: translate3d(0, -4px, 0) rotate(-1.2deg);
+  }
+  100% {
+    transform: translate3d(0, -4px, 0) rotate(0deg);
+  }
+}
+
+/* Stats strip inside the band */
+.band-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(18px, 5vw, 64px);
+  margin-top: clamp(26px, 4vh, 46px);
+  padding-top: clamp(22px, 3.5vh, 38px);
+  border-top: 1px solid var(--hairline);
+  width: 100%;
+}
+
+.stat-value {
+  font-size: clamp(28px, 4.6vw, 52px);
+  color: var(--highlight);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-top: 8px;
+}
+
+/* WL page ---------------------------------------------------------------- */
+
+.wl {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: clamp(120px, 18vh, 200px) var(--gutter) clamp(60px, 10vh, 110px);
+  text-align: center;
+}
+
+.wl-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 3vh, 30px);
+  max-width: 900px;
+}
+
+.wl-message {
+  font-size: clamp(38px, 8.5vw, 116px);
+  margin: 0;
+  color: var(--text);
+  text-shadow:
+    0 5px 0 var(--card),
+    0 10px 0 rgba(46, 31, 20, 0.9),
+    0 26px 56px rgba(12, 7, 4, 0.6);
+  animation: breathe 4.4s var(--ease-soft) infinite;
+  will-change: transform, opacity;
+}
+
+/* Slow breathing pulse — the page's only ambient motion. */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale3d(1, 1, 1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale3d(1.032, 1.032, 1);
+    opacity: 1;
+  }
+}
+
+.wl-note {
+  color: var(--text-dim);
+  max-width: 46ch;
+  margin: 0;
+  font-size: clamp(15px, 1.6vw, 18px);
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-dim);
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  transition:
+    color var(--dur) var(--ease-out),
+    background-color var(--dur) var(--ease-out),
+    transform var(--dur) var(--ease-out);
+}
+
+.back-link:hover {
+  color: var(--text);
+  background: rgba(74, 47, 27, 0.5);
+  transform: translate3d(-3px, 0, 0);
+}
+
+.back-link .back-arrow {
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.back-link:hover .back-arrow {
+  transform: translate3d(-4px, 0, 0);
+}
+
+/* Decorative arc behind the WL message */
+.wl-arc {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: min(120vw, 1100px);
+  transform: translate3d(-50%, -50%, 0);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+/* Reduced motion --------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .slide.is-active .slide-img {
+    animation: none;
+    transform: none;
+  }
+
+  .wl-message {
+    animation: none;
+    opacity: 1;
+  }
+
+  .scroll-cue-line {
+    animation: none;
+    opacity: 0.6;
+  }
+}
