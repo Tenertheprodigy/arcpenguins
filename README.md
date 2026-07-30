@@ -1,6 +1,6 @@
 # ARC PENGUINS
 
-Marketing site for **ARC PENGUINS** — 5,000 penguins on the Arc chain.
+Marketing site for **ARC PENGUINS** — 5,555 penguins on the Arc chain.
 Two pages, all brown, Lenis-smooth.
 
 ```bash

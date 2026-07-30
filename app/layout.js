@@ -18,13 +18,13 @@ const body = Inter({
 
 export const metadata = {
   metadataBase: new URL("https://arcpenguins.xyz"),
-  title: "Arc Penguins — 5,000 penguins on Arc",
+  title: "Arc Penguins — 5,555 penguins on Arc",
   description:
-    "ARC PENGUINS is a collection of 5,000 chunky, hand-crafted penguins living on the Arc chain.",
+    "ARC PENGUINS is a collection of 5,555 chunky, hand-crafted penguins living on the Arc chain.",
   openGraph: {
-    title: "Arc Penguins — 5,000 penguins on Arc",
+    title: "Arc Penguins — 5,555 penguins on Arc",
     description:
-      "A collection of 5,000 chunky, hand-crafted penguins living on the Arc chain.",
+      "A collection of 5,555 chunky, hand-crafted penguins living on the Arc chain.",
     type: "website",
   },
   twitter: {

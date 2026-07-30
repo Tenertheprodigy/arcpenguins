@@ -43,7 +43,7 @@ export default function Hero() {
       <motion.div style={copyParallax}>
         <Reveal className="shell" style={{ display: "grid", justifyItems: "center" }}>
           <RevealItem className="hero-eyebrow">
-            <Pulse /> 5,000 on Arc
+            <Pulse /> 5,555 on Arc
           </RevealItem>
 
           <motion.h1

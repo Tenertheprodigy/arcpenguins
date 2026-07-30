@@ -6,7 +6,7 @@ import Reveal, { RevealItem } from "./Reveal";
 const X_URL = "https://x.com/arcpenguins";
 
 const STATS = [
-  { value: "5,000", label: "Penguins" },
+  { value: "5,555", label: "Penguins" },
   { value: "Arc", label: "Chain" },
   { value: "Soon", label: "Mint" },
 ];
@@ -20,7 +20,7 @@ export default function SocialBand() {
         </RevealItem>
 
         <RevealItem as="p" className="band-sub">
-          <b>5,000 penguins</b> on Arc. Chunky, hand-drawn, and permanently
+          <b>5,555 penguins</b> on Arc. Chunky, hand-drawn, and permanently
           cold-blooded about brown.
         </RevealItem>
 
